@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: postgres-lab
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: lab
+      POSTGRES_PASSWORD: lab_password
+      POSTGRES_DB: commerce_lab
+
+    ports:
+      - "127.0.0.1:5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+    shm_size: "2gb"
+
+volumes:
+  postgres_data:

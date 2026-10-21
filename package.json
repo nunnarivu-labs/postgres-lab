@@ -1,0 +1,26 @@
+{
+  "name": "postgres-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local PostgreSQL learning and query benchmark lab",
+  "scripts": {
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:erase": "docker compose down --volumes --remove-orphans",
+    "db:status": "docker compose ps",
+    "db:logs": "docker compose logs -f postgres",
+    "db:psql": "docker compose exec postgres psql -U lab -d commerce_lab",
+    "db:counts": "docker compose exec -T postgres psql -X -U lab -d commerce_lab -f - < sql/counts.sql",
+    "db:size": "docker compose exec -T postgres psql -X -U lab -d commerce_lab -c \"SELECT pg_size_pretty(pg_database_size('commerce_lab')) AS database_size;\"",
+    "db:table-sizes": "docker compose exec -T postgres psql -X -U lab -d commerce_lab -c \"SELECT relid::regclass AS table_name, pg_size_pretty(pg_total_relation_size(relid)) AS total_size FROM pg_stat_user_tables WHERE schemaname = 'lab' ORDER BY pg_total_relation_size(relid) DESC;\"",
+    "db:seed": "./scripts/seed.sh",
+    "db:seed:smoke": "./scripts/seed.sh --profile smoke",
+    "db:seed:medium": "./scripts/seed.sh --profile medium",
+    "db:seed:full": "./scripts/seed.sh --profile full",
+    "db:seed:size": "./scripts/seed.sh --size-mb",
+    "db:reseed:smoke": "./scripts/seed.sh --profile smoke --reset",
+    "db:reseed:medium": "./scripts/seed.sh --profile medium --reset",
+    "db:reseed:full": "./scripts/seed.sh --profile full --reset",
+    "db:reseed:size": "./scripts/seed.sh --reset --size-mb"
+  }
+}
